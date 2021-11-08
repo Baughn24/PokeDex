@@ -12,6 +12,7 @@ function createPokeCard(pokemon){
     pokeCard.classList.add(`pokemon`);
     pokeContainer.append(pokeCard);
 //Setting the innerHTML for the new card using the data/object that is passed into the "pokemon" parameter. Also, using the toUpperCase method on the pokemon name se it will display in UPPERCASE text.
+//Takes the data from the next function (getPokemonData) and passing it into the pokeCard, to create each card on the site
 pokeCard.innerHTML = `
 <div class="img-container">
 <img src="${pokemon.data.sprites.front_shiny}"
@@ -27,7 +28,18 @@ async function getPokemonData(id){
     const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
     const pokemonData = await axios.get(url);
 console.log(pokemonData);
-console.log(pokemonData.data.sprites.front_shiny);
+console.log(pokemonData.data.sprites.front_shiny);//accessing the keys in dev tools
 console.log(pokemonData.data.name);
-createPokeCard(pokemonData);
+createPokeCard(pokemonData);//taking the data passed in the parameter and using the createPokeCard function above
 }
+
+//The getPokemon function loops through all the pokemon IDs and runs/executes the getPokemonData function for each ID
+//NOTE: Using async/await on this function because the code in the getPokemonData function is asynchronous (There is an Axios request in that function)
+
+async function getPokemon(){
+    for(i = 1; i <= numOfPokemon; i++){
+        console.log(i);//using this log to see the the number of each time the function runs in the dev tools
+        await getPokemonData(i);//1 will be set for i, then 2 and so on until 150
+    }
+}
+getPokemon();
